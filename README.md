@@ -10,6 +10,8 @@
 
 </div>
 
+<img width="1694" height="949" alt="image" src="https://github.com/user-attachments/assets/36533d16-3893-46c5-9881-88ec77cb53d9" />
+
 ---
 
 ## 🌕 Project Overview
