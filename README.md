@@ -12,8 +12,6 @@
 
 ### 🎮 [게임 플레이하기](https://nan2026-nine.vercel.app)
 
-💻 [GitHub Repository](https://github.com/MOONSpace1017/nan2026/tree/main)
-
 </div>
 
 <img width="1694" height="949" alt="image" src="https://github.com/user-attachments/assets/36533d16-3893-46c5-9881-88ec77cb53d9" />
