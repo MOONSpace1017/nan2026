@@ -802,7 +802,7 @@ export default class GameScene extends Phaser.Scene {
 
 
   create() {
-     console.log(
+    console.log(
       'tteok_basic 등록 여부:',
       this.textures.exists('tteok_basic'),
     );
@@ -824,23 +824,55 @@ export default class GameScene extends Phaser.Scene {
     this.createFridgePanel();
     this.createShopPanel();
 
-   // 기존: this.physics.world.setBounds(0, 0, 1280, 720);
-    this.physics.world.setBounds(
-      -this.SCREEN_W, -this.SCREEN_H,
-      this.SCREEN_W * this.WORLD_COLS,
-      this.SCREEN_H * this.WORLD_ROWS,
-    );
+    // 확장 월드 기능
+    this.worldExpansionEnabled = false;
 
-    this.cameras.main.setBounds(
-      -this.SCREEN_W, -this.SCREEN_H,
-      this.SCREEN_W * this.WORLD_COLS,
-      this.SCREEN_H * this.WORLD_ROWS,
-    );
+    if (this.worldExpansionEnabled) {
 
-    this.cameras.main.setScroll(0, 0); // 처음엔 지금 맵(중앙) 보여주기
+      // 3x3 확장 월드
+      this.physics.world.setBounds(
+        -this.SCREEN_W,
+        -this.SCREEN_H,
+        this.SCREEN_W * this.WORLD_COLS,
+        this.SCREEN_H * this.WORLD_ROWS,
+      );
 
-    
-    this.cameras.main.startFollow(this.player, true, 0.08, 0.08); // 이 줄 추가
+      this.cameras.main.setBounds(
+        -this.SCREEN_W,
+        -this.SCREEN_H,
+        this.SCREEN_W * this.WORLD_COLS,
+        this.SCREEN_H * this.WORLD_ROWS,
+      );
+
+      // 플레이어 추적 카메라
+      this.cameras.main.startFollow(
+        this.player,
+        true,
+        0.08,
+        0.08,
+      );
+
+    } else {
+
+      // 현재 공개 버전: 중앙 마을 1280x720만 사용
+      this.physics.world.setBounds(
+        0,
+        0,
+        this.SCREEN_W,
+        this.SCREEN_H,
+      );
+
+      this.cameras.main.setBounds(
+        0,
+        0,
+        this.SCREEN_W,
+        this.SCREEN_H,
+      );
+
+      // 카메라 고정
+      this.cameras.main.stopFollow();
+      this.cameras.main.setScroll(0, 0);
+    }
   }
 
   createWorld() {
@@ -1227,6 +1259,8 @@ export default class GameScene extends Phaser.Scene {
     this.player.setDisplaySize(400, 248);
 
     this.physics.add.existing(this.player);
+    // 실제 토끼 몸에 가까운 충돌 영역
+    this.player.body.setSize(70, 90, true);
     this.player.body.setCollideWorldBounds(true);
 
     this.playerLabel = this.add
@@ -6816,13 +6850,16 @@ export default class GameScene extends Phaser.Scene {
 
     // 하루 시간과 시계 바늘 진행
     this.updateDayClock();
+ 
     if (this.inHouse) {
       this.checkNearbyHouseArea();
     } else if (this.inFarm) {
       this.checkNearbyFarmArea();
     } else {
       this.checkNearbyArea();
+      this.checkMapBoundaryNotice();
     }
+    
     // 잠자는 동안에는 일반 이동과 상호작용을 중지
     if (this.isSleeping) {
       this.updateSleeping();
@@ -7166,6 +7203,34 @@ export default class GameScene extends Phaser.Scene {
       this.interactionMessageActive = false;
     });
   }
+  checkMapBoundaryNotice() {
+    // 실내에서는 표시하지 않음
+    if (this.inHouse || this.inFarm) {
+      return;
+    }
+
+    // 농장 / 집 / 상점 / 방앗간 안내가 뜨고 있다면
+    // 그 안내를 우선함
+    if (this.currentArea) {
+      return;
+    }
+
+    const body = this.player.body;
+    const margin = 35;
+
+    const nearEdge =
+      body.left <= margin ||
+      body.right >= this.SCREEN_W - margin ||
+      body.top <= margin ||
+      body.bottom >= this.SCREEN_H - margin;
+
+    if (nearEdge) {
+      this.interactionText
+        .setText('🚧 이 지역은 준비 중입니다')
+        .setVisible(true);
+    }
+  }
+
   checkNearbyArea() {
     let nearbyArea = null;
 
