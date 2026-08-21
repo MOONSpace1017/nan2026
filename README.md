@@ -116,6 +116,9 @@ NAN 2026을 준비하며 게임의 콘셉트와 규칙부터 직접 기획하고
 
 ## 🌱 Farming System
 
+<img width="1142" height="660" alt="image" src="https://github.com/user-attachments/assets/39ea7b84-8174-4622-bcb2-23a708f56307" />
+
+
 플레이어가 직접 농장에 들어가  
 각 밭과 상호작용할 수 있도록 구현했습니다.
 
@@ -278,6 +281,8 @@ SPACE 다시 누르기 → 내려놓기
 
 ## ❄️ Refrigerator System
 
+<img width="1177" height="671" alt="image" src="https://github.com/user-attachments/assets/e45c9c36-ffa1-4b10-9b17-8ddaf4ea0914" />
+
 냉장고는 완성한 떡을  
 다음 날까지 보관하기 위한 공간입니다.
 
@@ -393,6 +398,8 @@ SPACE 다시 누르기 → 내려놓기
 ---
 
 ## 🧾 Daily Journal
+
+<img width="1171" height="661" alt="image" src="https://github.com/user-attachments/assets/a56b6dc0-eced-41ec-b52f-e31957f21d7b" />
 
 하루가 끝난 뒤  
 플레이 결과를 확인할 수 있도록 영수증 형태의 하루 일지를 구현했습니다.
